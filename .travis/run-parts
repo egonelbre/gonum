@@ -13,9 +13,14 @@ if [[ "${dir}" = "" || ! -d "${dir}" ]]; then
     exit 1
 fi
 
-for f in $(echo ${dir%/}/*); do
-	[ -d $f ] && continue
-	[ ! -x $f ] && continue
-	echo "+$f"
-	$f
+for tagset in '' 'bounds' 'noasm' 'appengine' ;
+do
+    export TAGS=$tagset
+    echo "TAGS=${TAGS}"
+    for f in $(echo ${dir%/}/*); do
+        [ -d $f ] && continue
+        [ ! -x $f ] && continue
+        echo "+$f"
+        $f
+    done
 done
